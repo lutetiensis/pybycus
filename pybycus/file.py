@@ -1,6 +1,7 @@
 """ File reading operations. """
 
 import re
+import pybycus.beta
 
 class File:
     """ You may be able to use a standard software driver to
@@ -50,21 +51,21 @@ class File:
     def read_nstring(self, length):
         """ Read string of length `length'. """
         string = self._f.read(length).decode("utf-8")
-        return string
+        return pybycus.beta.convert(string)
 
     def read_cstring(self):
         """ Read string terminated by 0xff. """
         string = u""
         while self.peek_ubyte() != 0xff:
             string += chr(self.read_ubyte7())
-        return string
+        return pybycus.beta.convert(string)
 
     def read_string(self):
         """ Read 7-bit character string. """
         string = u""
         while self.peek_ubyte() <= 0x7f:
             string += chr(self.read_ubyte())
-        return string
+        return pybycus.beta.convert(string)
 
     # pylint: disable=R0912,R0915
     def read_id(self):
