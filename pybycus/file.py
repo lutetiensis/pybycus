@@ -147,9 +147,13 @@ class File:
             if right == 0x0:
                 level_s = [i for i in
                            re.split(r'([A-Za-z]+)', self._id[level]) if i]
-                if level_s[-1] == "1-2": # 1512.001
+                # It seems that the original code was dealing with a database that used
+                # the standard hyphen (U+002D), but some versions seem to have the
+                # a different hyphen character (U+2012).
+                # We can just check for both.
+                if re.match(r"^1[\-‐]2$", level_s[-1]): # 1512.001
                     level_s[-1] = "1-3"
-                elif level_s[-1] == "39-40": # 0137.001
+                elif re.match(r"^39[\-‐]40$", level_s[-1]): # 0137.001
                     level_s[-1] = "40"
                 elif re.match("[0-9]+", level_s[-1]): # number increment
                     level_s[-1] = str(int(level_s[-1]) + 1)
